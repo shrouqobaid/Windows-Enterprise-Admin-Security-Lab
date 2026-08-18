@@ -53,6 +53,7 @@ nslookup corp.local
 ```
 Resolve-DnsName corp.local -Server 127.0.0.1
 ```
+![DNS Configuration](screenshots/dns.config.png)
 ### اعدادات DHCP Configuration
 تم إعداد DHCP لتوفير إعدادات الشبكة (IP, Subnet, Gateway) للأجهزة العميلة داخل بيئة الـ Lab تلقائياً.
 
