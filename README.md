@@ -42,7 +42,7 @@ Network     → 192.168.10.0/24
 ### Active Directory Domain Services
   
 ## أولًا إعداد Windows Server 
-نم تثبيت خدمات النطاق (AD DS) وإنشاء Domain خاص بالبيئة تحت مسمى corp.local. كما تم إعداد Domain Controller وخدمات DNS لدعم بيئة Active Directory.
+تم تثبيت خدمات النطاق (AD DS) وإنشاء Domain خاص بالبيئة تحت مسمى corp.local. كما تم إعداد Domain Controller وخدمات DNS لدعم بيئة Active Directory.
 
 ![Active Directory Domain Information](screenshots/addomain.png)
 *التحقق من تفاصيل وخصائص النطاق (Active Directory Domain) بعد إتمام عملية التثبيت على خادم DC01.*
