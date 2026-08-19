@@ -77,8 +77,7 @@ Resolve-DnsName corp.local -Server 127.0.0.1
 
 ![DHCP Configuration and IP Settings](screenshots/dhcp.config.png)
 
-*التحقق من إعدادات الشبكة وعنوان الـ IP الثابت لخادم النطاق (DC01) باستخدام أمر ipconfig /all.*
-
+*تم التحقق من إعدادات الشبكة وعنوان IP الخاص بـDC01 باستخدام ipconfig /all، بالإضافة إلى إعداد DHCP لتوفير إعدادات الشبكة للأجهزة العميلة*
 
 ### تأسيس Active Directory والهيكل التنظيمي (AD Forest & OUs)
 
@@ -88,11 +87,13 @@ Resolve-DnsName corp.local -Server 127.0.0.1
 *استعراض وتأكيد حالة خادم متحكم النطاق (Domain Controller) وخصائص الـ Forest عبر أوامر PowerShell.*
 
 
-### 🏢 استعراض الهيكل التنظيمي للوحدات (OUs)
+### استعراض الهيكل التنظيمي للوحدات (OUs)
 
 تم استخدام أوامر PowerShell لاستعراض وتأكيد بناء الهيكل التنظيمي وتوزيع الأقسام الرئيسية (`HR, Finance, IT, Management`) داخل بيئة النطاق.
 
 ![Active Directory Organizational Units](screenshots/ous.png)
+![useou ](screenshots/ous.it.png)
+
 
 *عرض نتائج استعلام الوحدات التنظيمية (OUs) والمسارات الخاصة بها (DistinguishedName) عبر PowerShell.*
 
@@ -144,9 +145,6 @@ corp.local
 │
 └── Domain Controllers
 ```
-![user ](screenshots/user.acou.png)
-
-
 
 
 
@@ -164,7 +162,12 @@ corp.local
 - Lina Security
 - IT Admin
 
+  
 ![useou ](screenshots/ous.it.png)
+![user ](screenshots/user.acou.png)
+
+
+
 
 ---
 # 4️⃣ المجموعات الأمنية (Security Groups & RBAC)
@@ -231,7 +234,7 @@ Computer-Devices
 
 * **🔐 سياسات قفل الحسابات وكلمات المرور:**
   * **تطبيق تعقيد كلمات المرور (Password Complexity):**
-  
+  ![Default Domain Policy](screenshots/gpo-default-domain-policy.png)
   ![Password Policy Settings](screenshots/gpo-password-policy.png)
   *إعدادات سياسة كلمات المرور (Password Policy) وتفعيل شروط التعقيد ضمن سياسات المجموعة (GPO).*
 
@@ -280,8 +283,8 @@ Computer-Devices
 # 9️⃣ المراقبة الطرفية (Sysmon — Endpoint Monitoring)
 تم استخدام أداة Sysmon لمراقبة الأجهزة وتوفير معلومات تفصيلية عن العمليات والأنشطة الشبكية.
 
-* **أهم الأحداث المرصودة:** Sysmon Event ID 1 (Process Creation)
-
+* **أهم الأحداث المرصودة:** 
+تم التحقق من وصول أحداث Sysmon إلى Splunk ومراقبة Event ID 1 الخاص بإنشاء العمليات
 ![Splunk Sysmon EventCode 1](screenshots/splunk-sysmon-eventcode1.png)
 *استعلام في Splunk لعرض أحداث إنشاء العمليات (Sysmon EventCode=1) وتتبع العمليات المشبوهة على جهاز العميل PC01.*
 
@@ -366,14 +369,14 @@ source="*Sysmon/Operational" EventCode=1
 ### الاستجابة للحوادث: سيناريو هجوم (SMB Brute Force Attack)
 تم تنفيذ محاكاة عملية لهجوم تخمين على خدمة SMB.
 ### محاكاة هجوم SMB Brute Force
-تم تنفيذ هجوم تخمين كلمات المرور (Brute Force Attack) على خدمة المشاركة SMB باستخدام أداة **Hydra** من بيئة **Kali Linux** (`192.168.10.50`) ضد جهاز العميل `PC01` (`192.168.10.20`) لاختبار فعالية المراقبة ورصد محاولات الدخول الفاشلة والمتكررة.
+تم تنفيذ محاكاة لهجوم تخمين كلمات المرور (Brute Force Attack) على خدمة المشاركة SMB باستخدام أداة **Hydra** من بيئة **Kali Linux** (`192.168.10.50`) ضد جهاز العميل `PC01` (`192.168.10.20`) لاختبار فعالية المراقبة ورصد محاولات الدخول الفاشلة والمتكررة.
 
 * **الأمر المستخدم في الهجوم:**
 ```bash
 hydra -l PC01 -P passwords.txt smb2://192.168.10.20
 ```
 ![SMB Brute Force Attack](screenshots/hydra-smb-attack.png)
-*تنفيذ هجوم SMB Brute Force عبر أداة Hydra من Kali Linux والنجاح في العثور على كلمة المرور المستهدفة.*
+*تنفيذ هجوم SMB Brute Force عبر أداة Hydra من Kali Linux بهدف اختبار قدرة البيئة على تسجيل محاولات المصادقة الفاشلة واكتشافها وتحليلها .*
 
 ⚔️ سيناريو الهجوم (Attack Flow):
 ```
@@ -451,12 +454,15 @@ $$\text{Detection} \rightarrow \text{Investigation} \rightarrow \text{Identifica
 
 
 ---
+---
 
-## 🏁 خاتمة المشروع (Project Outcome)
+##  خاتمة المشروع (Project Outcome)
 
 تم بنجاح بناء بيئة عمل مؤسسية متكاملة (`Windows Enterprise Lab`) تبدأ من إنشاء خادم النطاق ($Domain\ Controller$) وخدمات الـ $Active\ Directory$، مرورًا بإدارة المستخدمين والأجهزة وتطبيق إجراءات التصليد الصارمة، وانتهاءً ببناء منظومة مراقبة أمنية متكاملة باستخدام $Sysmon$ و $Splunk\ SIEM$.
 
-كما نجح المعمل في محاكاة وتوثيق سيناريو هجوم اختراق حقيقي ($SMB\ Brute\ Force$)، واكتشافه وتحليله بدقة عبر السجلات الأمنية، مع تفعيل إجراءات الاستجابة والاحتواء القياسية.
-يبرهن هذا المشروع بجلاء على كفاءة وقدرة عالية في تطبيق مهارات إدارة الأنظمة والأمن السيبراني في بيئات المؤسسات الحقيقية.
+كما نجح المعمل في محاكاة وتوثيق سيناريو هجوم اختراق حقيقي ($SMB\ Brute\ Force$)، واكتشافه وتحليله بدقة عبر السجلات الأمنية، مع تفعيل إجراءات الاستجابة والاحتواء القياسية. 
 
+**يوضح هذا المشروع خبرة عملية مباشرة في مجالات إدارة بيئات العمل المؤسسية لنظام ويندوز ($Windows\ Enterprise\ Administration$)، خدمات النطاق ($Active\ Directory$)، التصليد الأمني ($Security\ Hardening$)، المراقبة الأمنية عبر أنظمة الـ SIEM، رصد التهديدات، والاستجابة للحوادث السيبرانية، مما يبرهن على تطبيق مهارات إدارة الأنظمة والأمن السيبراني في بيئات المؤسسات الحقيقية.**
+
+---
 ---
