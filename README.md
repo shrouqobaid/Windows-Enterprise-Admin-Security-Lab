@@ -62,7 +62,7 @@ Resolve-DnsName corp.local -Server 127.0.0.1
 ![DHCP Configuration](screenshots/dhcp.config.png)
 * تأسيس Active Directory والهيكل التنظيمي (AD Forest & OUs)
 * تنفيذ أمر تثبيت Forest: تم تشغيل أوامر PowerShell لإنشاء النطاق corp.local مع تعيين كلمات المرور الآمنة.
-![Domain Controller ](screenshots/domaincon,png)
+![Domain Controller ](screenshots/domaincon.png)
 
 * استعراض الهيكل التنظيمي 
 تأكيد بناء الهيكل التنظيمي (OUs) وتوزيع الأقسام الرئيسية (HR, Finance, IT, Management).
