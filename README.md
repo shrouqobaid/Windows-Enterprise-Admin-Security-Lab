@@ -67,6 +67,9 @@ Resolve-DnsName corp.local -Server 127.0.0.1
 ```
 Get-ADOrganizationalUnit -Filter * | Select Name, DistinguishedName
 ```
+![Ous ](screenshots/ous.png)
+
+
 ---
 # 2️⃣ الهيكل التنظيمي للوحدات (Organizational Units — OUs)
 تم تصميم هيكل تنظيمي يحاكي بيئة مؤسسة حقيقية، مع فصل المستخدمين والأجهزة والحسابات حسب الوظيفة كالتالي:
